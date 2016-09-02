@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Swift LOG 输出 | Ieggs</title>
+  <title>Swift3 － 更加细分的访问控制级别 | Ieggs</title>
   <meta name="author" content="huhuegg">
   
   <meta name="description" content="移动开发记录博客">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Swift LOG 输出"/>
+  <meta property="og:title" content="Swift3 － 更加细分的访问控制级别"/>
   <meta property="og:site_name" content="Ieggs"/>
 
   
@@ -59,15 +59,15 @@
     <header>
       
       <div class="alignright">
-        <a id="/2016/04/11/Swift-LOG-输出/" class="pageviews"></a>
+        <a id="/2016/09/02/Swift3-－-更加细分的访问控制级别/" class="pageviews"></a>
       </div>
       
         <div class="icon"></div>
-        <time datetime="2016-04-11T03:29:38.000Z"><a href="/2016/04/11/Swift-LOG-输出/">2016-04-11</a></time>
+        <time datetime="2016-09-02T10:53:50.000Z"><a href="/2016/09/02/Swift3-－-更加细分的访问控制级别/">2016-09-02</a></time>
       
       
   
-    <h1 class="title">Swift LOG 输出</h1>
+    <h1 class="title">Swift3 － 更加细分的访问控制级别</h1>
   
 
       
@@ -77,26 +77,45 @@
         
           
         
-        <p>Log 输出是程序开发中很重要的组成部分，虽然它并不是直接的业务代码，但是却可以忠实地反映我们的程序是如何工作的，以及记录程序运行的过程中发生了什么。</p>
-<p>在 Swift 中，最简单的输出方法就是使用 <code>print</code>，在我们关心的地方输出字符串和值。但是这并不够，试想一下当程序变得非常复杂的时候，我们可能会输出很多内容，而想在其中寻找到我们希望的输出其实并不容易。我们往往需要更好更精确的输出，这包括输出这个 log 的文件，调用的行号以及所处的方法名字等等。</p>
-<p>我们当然可以在 <code>print</code> 的时候将当前的文件名字和那些必要的信息作为参数同我们的消息一起进行打印：</p>
-<figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Test.swift</span></span><br><span class="line">func <span class="function"><span class="keyword">method</span><span class="params">()</span> <span class="comment">&#123;</span><br><span class="line">    //...</span><br><span class="line">    print("文件名:Test.swift, 方法名:method，这是一条输出")</span><br><span class="line">    //...</span><br><span class="line">&#125;</span></span></span><br></pre></td></tr></table></figure>
-<p>但是这显然非常麻烦，每次输入文件名和方法名不说，随着代码的改变，这些 Log 的位置也可能发生改变，这时我们可能还需要不断地去维护这些输出，代价实在太大。</p>
-<p>在 Swift 中，编译器为我们准备了几个很有用的编译符号，用来处理类似这样的需求，它们分别是：</p>
-<p>符号类型描述<strong>FILE</strong>String包含这个符号的文件的路径<strong>LINE</strong>Int符号出现处的行号<strong>COLUMN</strong>Int符号出现处的列<strong>FUNCTION</strong>String包含这个符号的方法名字</p>
-<p>因此，我们可以通过使用这些符号来写一个好一些的 Log 输出方法：</p>
-<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">func printLog<span class="symbol">\&lt;</span>T<span class="symbol">\&gt;</span>(message: T,</span><br><span class="line">                    file: String = <span class="symbol">\_</span><span class="symbol">\_</span>FILE<span class="symbol">\_</span><span class="symbol">\_</span>,</span><br><span class="line">                  method: String = <span class="symbol">\_</span><span class="symbol">\_</span>FUNCTION<span class="symbol">\_</span><span class="symbol">\_</span>,</span><br><span class="line">                    line: Int = <span class="symbol">\_</span><span class="symbol">\_</span>LINE<span class="symbol">\_</span><span class="symbol">\_</span>)</span><br><span class="line">&#123;</span><br><span class="line">    print("<span class="symbol">\\</span>((file as NSString).lastPathComponent)[<span class="symbol">\\</span>(line)], <span class="symbol">\\</span>(method): <span class="symbol">\\</span>(message)")</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样，在进行 log 的时候我们只需要使用这个方法就能完成文件名，行号以及方法名的输出了。最棒的是，我们不再需要对这样的输出进行维护，无论在哪里它都能正确地输出各个参数：</p>
-<figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Test.swift</span></span><br><span class="line">func <span class="function"><span class="keyword">method</span><span class="params">()</span> <span class="comment">&#123;</span><br><span class="line">    //...</span><br><span class="line">    printLog("这是一条输出")</span><br><span class="line">    //...</span><br><span class="line">&#125;</span></span><br><span class="line"></span><br><span class="line">// 输出：</span><br><span class="line">// <span class="title">Test</span>.<span class="title">swift</span>[62], <span class="title">method</span><span class="params">()</span>:</span> 这是一条输出</span><br></pre></td></tr></table></figure>
-<p>另外，对于 log 输出更多地其实是用在程序开发和调试的过程中的，过多的输出有可能对运行的性能造成影响。在 Release 版本中关闭掉向控制台的输出也是软件开发中一种常见的做法。如果我们在开发中就注意使用了统一的 log 输出的话，这就变得非常简单了。使用<a href="http://swifter.tips/condition-compile/" target="_blank" rel="external">条件编译</a>的方法，我们可以添加条件，并设置合适的编译配置，使 <code>printLog</code> 的内容在 Release 时被去掉，从而成为一个空方法：</p>
-<figure class="highlight taggerscript"><table><tr><td class="code"><pre><span class="line">func printLog<span class="symbol">\&lt;</span>T<span class="symbol">\&gt;</span>(message: T,</span><br><span class="line">                    file: String = <span class="symbol">\_</span><span class="symbol">\_</span>FILE<span class="symbol">\_</span><span class="symbol">\_</span>,</span><br><span class="line">                  method: String = <span class="symbol">\_</span><span class="symbol">\_</span>FUNCTION<span class="symbol">\_</span><span class="symbol">\_</span>,</span><br><span class="line">                    line: Int = <span class="symbol">\_</span><span class="symbol">\_</span>LINE<span class="symbol">\_</span><span class="symbol">\_</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="symbol">\#</span>if DEBUG</span><br><span class="line">    print("<span class="symbol">\\</span>((file as NSString).lastPathComponent)[<span class="symbol">\\</span>(line)], <span class="symbol">\\</span>(method): <span class="symbol">\\</span>(message)")</span><br><span class="line">    <span class="symbol">\#</span>endif</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>新版本的 LLVM 编译器在遇到这个空方法时，甚至会直接将这个方法整个去掉，完全不去调用它，从而实现零成本。</p>
+        <p><img src="https://raw.githubusercontent.com/swiftingio/blog/%2321-Swift3-Access-Control/%2321%20Swift3%20Access%20Control/Swift3AcccesControl.png" alt=""></p>
+<p>访问控制可以限定哪些代码你可以访问，哪些代码你不能访问。</p>
+<hr>
+<p>#测试环境</p>
+<p>####系统版本<br>10.11.5 Beta</p>
+<p>####Swift版本<br>Xcode8 beta 6(swift 3.0)</p>
+<hr>
+<p>#模块<br>在 Swift 中我们使用模块来管理代码，每个模块指定一个命名空间并强制指定模块外哪些部分的代码是可以被访问控制的。</p>
+<p>模块就是常用的Framework或App bundle。为了实现某些通用的功能或封装一些常用的方法,我们常会将代码打包成Framework，这个Framework就被称为模块，不论它被引入到其它工程或者Framework，它里面的一切（属性、函数等）都属于这个模块。</p>
+<p>前文介绍的<a href="http://www.jianshu.com/p/df134a5d99c5" target="_blank" rel="external">Swift的包管理器</a>最终提供到工程使用的就是Framework，这个就是模块。</p>
+<p>#访问级别<br>以下对访问级别的描述适用于<strong>Xcode8 beta 6</strong>及以后的Swift版本(在此之前有三个访问级别，分别为 <code>public</code>、 <code>internal</code>、 <code>private</code>)。</p>
+<ul>
+<li><p><strong>open</strong><br>可以访问自己<strong>模块</strong>或应用中<strong>源文件</strong>里的任何实体，别人也可以访问引入该模块中源文件里的所有实体。<br>在模块之外,  <code>open</code> 声明的成员变量和函数<strong>可以被override</strong>的。<br>相当于原来的<code>public</code>，通常情况下，某个接口或Framework被外部使用时，将其设置为<code>open</code>级别。</p>
+</li>
+<li><p><strong>public</strong><br>与<code>open</code>的含义大致相同，但声明的成员变量和函数<strong>不能被override</strong>的。</p>
+</li>
+</ul>
+<ul>
+<li><strong>internal</strong><br>可以访问自己模块或应用中源文件里的任何实体，但是别人不能访问该模块中源文件里的实体。不指定的话，默认的就是<code>internal</code>级别。</li>
+</ul>
+<ul>
+<li><p><strong>fileprivate</strong><br>可以用作隐藏某些功能的实现细节，作用域为当前源文件。<br>相当于原来的<code>private</code>。</p>
+</li>
+<li><p><strong>private</strong><br>只能在当前作用域内发生作用，比起之前更加<code>private</code>。<br><strong>同一文件里 extension 里也是不能访问的到 private 修饰的成员变量</strong>。</p>
+</li>
+</ul>
+<hr>
+<p>用Swift开发Framework的iOSer，开始改代码吧～</p>
 
       
     </div>
     <footer>
       
       
+  
+  <div class="tags">
+    <a href="/tags/swift/">swift</a>
+  </div>
+
       
         <div class="alignright share-box">
   
@@ -111,7 +130,7 @@
 
 
 <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="/2016/04/11/Swift-LOG-输出/" data-title="Swift LOG 输出" data-url="http://www.ieggs.info/2016/04/11/Swift-LOG-输出/"></div>
+    <div class="ds-thread" data-thread-key="/2016/09/02/Swift3-－-更加细分的访问控制级别/" data-title="Swift3 － 更加细分的访问控制级别" data-url="http://www.ieggs.info/2016/09/02/Swift3-－-更加细分的访问控制级别/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -131,10 +150,10 @@ var duoshuoQuery = {short_name:"huhuegg"};
 
 
   <script type="text/javascript">
-  var views = sessionStorage.getItem('/2016/04/11/Swift-LOG-输出/');
+  var views = sessionStorage.getItem('/2016/09/02/Swift3-－-更加细分的访问控制级别/');
   console.log(views)
   if (views != null) {
-    var post = document.getElementById('/2016/04/11/Swift-LOG-输出/');
+    var post = document.getElementById('/2016/09/02/Swift3-－-更加细分的访问控制级别/');
     post.innerHTML = views;
     post.style.display = "inline";
   } else {
@@ -173,7 +192,7 @@ if (flag == "yes"){
 	var json = to_json(workbook);
 
 	$.each(json., function(index, item){
-  if(item. == '/2016/04/11/Swift-LOG-输出/'){
+  if(item. == '/2016/09/02/Swift3-－-更加细分的访问控制级别/'){
     var post = document.getElementById(item.);
     post.innerHTML = item.undefined;
     post.style.display = "inline";

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>iOS应用安装失败原因排查 | Ieggs</title>
+  <title>第 4 页 | Ieggs</title>
   <meta name="author" content="huhuegg">
   
   <meta name="description" content="移动开发记录博客">
@@ -11,7 +11,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="iOS应用安装失败原因排查"/>
+  
   <meta property="og:site_name" content="Ieggs"/>
 
   
@@ -53,7 +53,9 @@
   <div class="clearfix"></div>
 </div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+
+  <article class="post">
   
   <div class="post-content">
     <header>
@@ -67,15 +69,13 @@
       
       
   
-    <h1 class="title">iOS应用安装失败原因排查</h1>
+    <h1 class="title"><a href="/2016/05/18/iOS应用安装失败原因排查/">iOS应用安装失败原因排查</a></h1>
   
 
       
     </header>
     <div class="entry">
       
-        
-          
         
         <h3 id="在-iOS-9-中启动应用时，出现提示“未受信任的企业级开发者”"><a href="#在-iOS-9-中启动应用时，出现提示“未受信任的企业级开发者”" class="headerlink" title="在 iOS 9 中启动应用时，出现提示“未受信任的企业级开发者”"></a>在 iOS 9 中启动应用时，出现提示“未受信任的企业级开发者”</h3><p>这样问题是因为在 iOS 9 以后的版本中，苹果对企业签名的应用做了更严格了限制。具体解决办法：</p>
 <p>在 iOS 9 中，苹果对企业签名的应用运行时，进行了更严格的限制。因此，在 iOS 9 中，企业签名后的应用安装好之后，是无法直接启动的。默认情况下，在 iOS 9 中运行一款企业签名的应用时，会弹出类似这样的提示：</p>
@@ -136,9 +136,11 @@
   </div>
 
       
-        <div class="alignright share-box">
+        
+          <div class="alignright share-box">
   
 </div>
+        
       
       <div class="clearfix"></div>
     </footer>
@@ -148,94 +150,22 @@
 
 
 
-<!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="/2016/05/18/iOS应用安装失败原因排查/" data-title="iOS应用安装失败原因排查" data-url="http://www.ieggs.info/2016/05/18/iOS应用安装失败原因排查/"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"huhuegg"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-<!-- 多说公共JS代码 end -->
 
 
 
 
-  <script type="text/javascript">
-  var views = sessionStorage.getItem('/2016/05/18/iOS应用安装失败原因排查/');
-  console.log(views)
-  if (views != null) {
-    var post = document.getElementById('/2016/05/18/iOS应用安装失败原因排查/');
-    post.innerHTML = views;
-    post.style.display = "inline";
-  } else {
-    var flag = sessionStorage.getItem('http://www.ieggs.info' + "/pageviews/" + '0');
-if (flag == "yes"){
-  var paths = null
-  $.each(paths, function(index, path){
-    var post = document.getElementById(path);
-    var views = sessionStorage.getItem(path);
-    if (views != null) {
-      post.innerHTML = views;
-      post.style.display = "inline";
-    }
-  });
-} else if (flag == null){
-  if(typeof require !== 'undefined') XLSX = require('xlsx');
+  
 
-  var url = "https://docs.google.com/spreadsheets/d/" + 'null' + "/export";
-  var oReq = new XMLHttpRequest();
-  oReq.open("GET", url, true);
-  oReq.responseType = "arraybuffer";
 
-  oReq.onload = function(e) {
-    var arraybuffer = oReq.response;
-
-    /* convert data to binary string */
-    var data = new Uint8Array(arraybuffer);
-	var arr = new Array();
-	for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-	var bstr = arr.join("");
-
-	/* Call XLSX */
-	var workbook = XLSX.read(bstr, {type:"binary"});
-
-    /* DO SOMETHING WITH workbook HERE */
-	var json = to_json(workbook);
-
-	$.each(json., function(index, item){
-  if(item. == '/2016/05/18/iOS应用安装失败原因排查/'){
-    var post = document.getElementById(item.);
-    post.innerHTML = item.undefined;
-    post.style.display = "inline";
-    sessionStorage.setItem(item., item.undefined);
-  }
-})
-  }
-
-  oReq.send();
-}
-
-function to_json(workbook) {
-  var result = {};
-  workbook.SheetNames.forEach(function(sheetName) {
-	var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
-      if(roa.length > 0){
-		result[sheetName] = roa;
-	  }
-  });
-  return result;
-}
-  }
-</script>
-
+<nav id="pagination">
+  
+    <a href="/page/3/" class="alignleft prev">上一页</a>
+  
+  
+    <a href="/page/5/" class="alignright next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">

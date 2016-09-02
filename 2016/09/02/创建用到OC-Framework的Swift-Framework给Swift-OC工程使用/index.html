@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>创建用到OC Framework的Swift Framework给Swift / OC工程使用 | Ieggs</title>
+  <meta name="author" content="huhuegg">
+  
+  <meta name="description" content="移动开发记录博客">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="创建用到OC Framework的Swift Framework给Swift / OC工程使用"/>
+  <meta property="og:site_name" content="Ieggs"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="shortcut icon">
+  <link rel="alternate" href="/atom.xml" title="Ieggs" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  
+  <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.4.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+<script src="/js/dist/xlsx.core.min.js"></script>
+
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div id="nav-top">
+  <div class="alignleft main-title">
+    <h1>Ieggs</h1>
+    <h2>huhuegg 的个人博客</h2>
+  </div>
+  <nav id="main-nav" class="alignright">
+    <ul>
+      
+        <li><a href="/">首页</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+  <div class="clearfix"></div>
+</div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+      <div class="alignright">
+        <a id="/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/" class="pageviews"></a>
+      </div>
+      
+        <div class="icon"></div>
+        <time datetime="2016-09-02T10:43:59.000Z"><a href="/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/">2016-09-02</a></time>
+      
+      
+  
+    <h1 class="title">创建用到OC Framework的Swift Framework给Swift / OC工程使用</h1>
+  
+
+      
+    </header>
+    <div class="entry">
+      
+        
+          
+        
+        <p>#遇到的问题<br>平时很熟悉在Swift工程中使用Objective-C的方法，一个桥接头文件就搞定了。在写Swift Framework的时候很自然的就是先随意创建个oc文件，等待弹出是否需要自动创建桥接文件的提示。<strong>没出现！ 手动添加也不生效！</strong> </p>
+<p>那么如何在Swift的framework中使用OC的framework呢？<br>刚踩完坑，留个demo。</p>
+<p>##创建OC Framework</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-efb1327b04e067f6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="OCFramework"></p>
+<p>###为swift framework调用做配置</p>
+<ol>
+<li>需要把给Swift调用的TestOCFramework.h添加到OCFramework.h中</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-a75064e0c152ebfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="此处添加需要被SwiftFramework访问的.h"></p>
+<ol>
+<li>设置OCFramework-&gt;BuildPhases-&gt;Headers</li>
+</ol>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-7cd0ad8e7327aee3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="将TestOCFramework.h移至Public"></p>
+<p>###TestOCFramework<br>TestOCFramework.h<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface TestOCFramework : NSObject</span><br><span class="line"></span><br><span class="line">+(NSString *)hello;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<p>TestOCFramework.m</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#import &quot;TestOCFramework.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation TestOCFramework</span><br><span class="line">+(NSString *)hello &#123;</span><br><span class="line">    return @&quot;Objective-c hello&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>##创建Swift Framework</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-f24b89b4f0b2eb08.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="SwiftFramework"></p>
+<p>###添加OCFramework.framework</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-feb9d53c95690b76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加OCFramework.framework"></p>
+<p>###import OCFramework</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-13b98a382c3fcd78.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加需要调用的OCFramework的.h"></p>
+<p>###TestSwiftFramework<br><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSwiftFramework</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">hello</span>() </span>&#123;</span><br><span class="line">        <span class="comment">//测试调用OCFramework</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> ocHello = <span class="type">TestOCFramework</span>.hello() &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"TestSwiftFramework.hello load oc framework: <span class="subst">\(ocHello)</span>"</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"TestSwiftFramework load OCFramework failed"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>###SwiftFramework调用OCFramework就这样完成啦，分别创建OC和Swift的Demo来测试一下。</p>
+<p>##TestOCDemo<br>创建OC工程测试</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-cbe1e24e80450677.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="OC测试工程"></p>
+<p>###添加Framework</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-daf8fa0565cb3fa5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加使用的Framework"></p>
+<p>###为SwiftFramwork修改Build Settings</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-463324b9037b02c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="将Always Embed Swift Standard Libraries设置为Yes"></p>
+<p>###在AppDelegate调用SwiftFramework试试<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#import &quot;AppDelegate.h&quot;</span><br><span class="line"></span><br><span class="line">#import &quot;SwiftFramework/SwiftFramework-Swift.h&quot;</span><br><span class="line">@interface AppDelegate ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation AppDelegate</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    //测试调用SwiftFramework</span><br><span class="line">    [TestSwiftFramework hello];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
+<p>日志<br><code>TestSwiftFramework.hello load oc framework: Objective-c hello</code></p>
+<p>##TestSwiftDemo<br>创建Swift工程测试</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-939b85d7db1924e1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Swift测试工程"></p>
+<p>###添加Framework</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1854818-7aa62557b7862745.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加Framework"></p>
+<p>###在AppDelegate调用SwiftFramework试试<br><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> SwiftFramework</span><br><span class="line"></span><br><span class="line"><span class="meta">@UIApplicationMain</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppDelegate</span>: <span class="title">UIResponder</span>, <span class="title">UIApplicationDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> window: <span class="type">UIWindow</span>?</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(<span class="number">_</span> application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="comment">//测试调用SwiftFramework</span></span><br><span class="line">        <span class="type">TestSwiftFramework</span>.hello()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>日志<br><code>TestSwiftFramework.hello load oc framework: Objective-c hello</code></p>
+<p>###查看Demo源码<br><a href="https://github.com/huhuegg/Demo/tree/master/UseOCFrameworkInSwiftFramework" target="_blank" rel="external">https://github.com/huhuegg/Demo/tree/master/UseOCFrameworkInSwiftFramework</a></p>
+
+      
+    </div>
+    <footer>
+      
+      
+  
+  <div class="tags">
+    <a href="/tags/swift/">swift</a>, <a href="/tags/framework/">framework</a>, <a href="/tags/Objective-c/">Objective-c</a>
+  </div>
+
+      
+        <div class="alignright share-box">
+  
+</div>
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+<!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/" data-title="创建用到OC Framework的Swift Framework给Swift / OC工程使用" data-url="http://www.ieggs.info/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"huhuegg"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+  <script type="text/javascript">
+  var views = sessionStorage.getItem('/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/');
+  console.log(views)
+  if (views != null) {
+    var post = document.getElementById('/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/');
+    post.innerHTML = views;
+    post.style.display = "inline";
+  } else {
+    var flag = sessionStorage.getItem('http://www.ieggs.info' + "/pageviews/" + '0');
+if (flag == "yes"){
+  var paths = null
+  $.each(paths, function(index, path){
+    var post = document.getElementById(path);
+    var views = sessionStorage.getItem(path);
+    if (views != null) {
+      post.innerHTML = views;
+      post.style.display = "inline";
+    }
+  });
+} else if (flag == null){
+  if(typeof require !== 'undefined') XLSX = require('xlsx');
+
+  var url = "https://docs.google.com/spreadsheets/d/" + 'null' + "/export";
+  var oReq = new XMLHttpRequest();
+  oReq.open("GET", url, true);
+  oReq.responseType = "arraybuffer";
+
+  oReq.onload = function(e) {
+    var arraybuffer = oReq.response;
+
+    /* convert data to binary string */
+    var data = new Uint8Array(arraybuffer);
+	var arr = new Array();
+	for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
+	var bstr = arr.join("");
+
+	/* Call XLSX */
+	var workbook = XLSX.read(bstr, {type:"binary"});
+
+    /* DO SOMETHING WITH workbook HERE */
+	var json = to_json(workbook);
+
+	$.each(json., function(index, item){
+  if(item. == '/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/'){
+    var post = document.getElementById(item.);
+    post.innerHTML = item.undefined;
+    post.style.display = "inline";
+    sessionStorage.setItem(item., item.undefined);
+  }
+})
+  }
+
+  oReq.send();
+}
+
+function to_json(workbook) {
+  var result = {};
+  workbook.SheetNames.forEach(function(sheetName) {
+	var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+      if(roa.length > 0){
+		result[sheetName] = roa;
+	  }
+  });
+  return result;
+}
+  }
+</script>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  
+    <form action="//google.com/search" method="get" accept-charset="utf-8">
+      <input type="search" name="q" results="0" placeholder="搜索">
+      <input type="hidden" name="q" value="site:www.ieggs.info">
+    </form>
+  
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">最新文章</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2016/09/02/Swift3-－-更加细分的访问控制级别/">Swift3 － 更加细分的访问控制级别</a>
+      </li>
+    
+      <li>
+        <a href="/2016/09/02/Swift3-包管理器/">Swift3 - 包管理器</a>
+      </li>
+    
+      <li>
+        <a href="/2016/09/02/创建用到OC-Framework的Swift-Framework给Swift-OC工程使用/">创建用到OC Framework的Swift Framework给Swift / OC工程使用</a>
+      </li>
+    
+      <li>
+        <a href="/2016/05/18/iOS应用安装失败原因排查/">iOS应用安装失败原因排查</a>
+      </li>
+    
+      <li>
+        <a href="/2016/04/11/Swift-LOG-输出/">Swift LOG 输出</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Objective-c/" style="font-size: 10px;">Objective-c</a> <a href="/tags/SPM/" style="font-size: 10px;">SPM</a> <a href="/tags/framework/" style="font-size: 10px;">framework</a> <a href="/tags/inHouse/" style="font-size: 10px;">inHouse</a> <a href="/tags/ios9/" style="font-size: 10px;">ios9</a> <a href="/tags/swift/" style="font-size: 20px;">swift</a>
+  </div>
+</div>
+
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div id="foot-nav">
+  <ul class="social">
+    
+      <li><a class="github" href="https://github.com/huhuegg" title="github">github</a></li>
+    
+      <li><a class="rss" href="/atom.xml" title="rss">rss</a></li>
+    
+  </ul>
+</div>
+<div>
+  
+    &copy; 2016 huhuegg
+  
+</div>
+<div class="clearfix"></div></footer>
+  
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<script type="text/javascript">
+  function navbar() {
+    var top = $('#nav-top').innerHeight();
+    $('#header').css('min-height', top);
+  }
+  navbar();
+  $(window).resize(navbar);
+</script>
+<div id="totop" class="footer-btn to-top">
+  <a title="返回顶部"></a>
+</div>
+
+<script type="text/javascript">
+  $(function(){ 
+	// When to show the scroll link
+	// higher number = scroll link appears further down the page   
+	var upperLimit = 800;
+	
+	// Our scroll link element
+	var scrollElem = $('#totop');
+   
+	// Scroll to top speed
+	var scrollSpeed = 500;
+   
+	// Show and hide the scroll to top link based on scroll position   
+	scrollElem.hide();
+	$(window).scroll(function () {            
+		var scrollTop = $(document).scrollTop();       
+		if ( scrollTop > upperLimit ) {
+		  $(scrollElem).stop().fadeTo(300, 1); // fade back in
+		  $(scrollElem).animate({bottom: "58px"}, { queue: false, duration: 10 });
+		} else {
+		  $(scrollElem).stop().fadeTo(300, 0); // fade out
+	      $(scrollElem).animate({bottom: "-200px"}, { queue: false, duration: 10 });
+			
+		}
+	});
+
+	// Scroll to top animation on click
+	$(scrollElem).click(function(){
+	  $('html, body').animate({scrollTop:0}, scrollSpeed);
+	  $(scrollElem).animate({bottom: "-200px"}, { queue: false, duration: 10 });
+	  return false;
+	});
+  });
+</script>
+</body>
+</html>
