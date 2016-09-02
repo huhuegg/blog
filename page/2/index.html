@@ -78,12 +78,11 @@
       
         
         <p><img src="https://img.aotu.io/MarkLin/SPM/SPM_cover.png" alt=""><br>Swift Package Manager(SPM)是苹果最新的官方工具,可以用来管理 Swift 代码的分配，它为 Swift 编译系统集成了自动进行下载、编译和连接依赖的过程。<br>在此之前我们常用的工具是Cocoapods和Carthage。</p>
-<p>#支持的平台<br>✔ macOS<br>✔ Linux<br>✘ iOS<br>✘ watchOS<br>✘ tvOS</p>
+<h1 id="支持的平台"><a href="#支持的平台" class="headerlink" title="支持的平台"></a>支持的平台</h1><p>✔ macOS<br>✔ Linux<br>✘ iOS<br>✘ watchOS<br>✘ tvOS</p>
 <hr>
-<p>#测试环境</p>
-<p>##系统版本<br>10.11.5 Beta</p>
-<p>##Swift版本<br>Xcode7.3.1(swift 2.2)<br>Xcode8 beta(swift 3)</p>
-<p>##检查当前Swift版本是否支持SPM<br>当前默认为Xcode7.3.1,查看swift版本<br><code>swift -version</code></p>
+<h1 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h1><h2 id="系统版本"><a href="#系统版本" class="headerlink" title="系统版本"></a>系统版本</h2><p>10.11.5 Beta</p>
+<h2 id="Swift版本"><a href="#Swift版本" class="headerlink" title="Swift版本"></a>Swift版本</h2><p>Xcode7.3.1(swift 2.2)<br>Xcode8 beta(swift 3)</p>
+<h2 id="检查当前Swift版本是否支持SPM"><a href="#检查当前Swift版本是否支持SPM" class="headerlink" title="检查当前Swift版本是否支持SPM"></a>检查当前Swift版本是否支持SPM</h2><p>当前默认为Xcode7.3.1,查看swift版本<br><code>swift -version</code></p>
 <blockquote>
 <p>Apple Swift version 2.2 (swiftlang-703.0.18.8 clang-703.0.31)<br>Target: x86_64-apple-macosx10.9</p>
 </blockquote>
@@ -102,42 +101,39 @@
 </blockquote>
 <p>这个error是因为我们还没有创建SPM的库</p>
 <hr>
-<p>#创建SPM测试库</p>
-<p>##初始化</p>
-<p>####在github创建SPMTest测试库<br><a href="https://github.com/huhuegg/SPMTest.git" target="_blank" rel="external">https://github.com/huhuegg/SPMTest.git</a></p>
-<p>####clone SPMTest<br><code>cd /Users/admin/Swift/SwiftPackageManagerExample/</code><br><code>git clone https://github.com/huhuegg/SPMTest.git</code></p>
-<p>####初始化SPMTest library<br><code>cd /Users/admin/Swift/SwiftPackageManagerExample/SPMTest</code><br><code>swift package init --type library</code></p>
+<h1 id="创建SPM测试库"><a href="#创建SPM测试库" class="headerlink" title="创建SPM测试库"></a>创建SPM测试库</h1><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h4 id="在github创建SPMTest测试库"><a href="#在github创建SPMTest测试库" class="headerlink" title="在github创建SPMTest测试库"></a>在github创建SPMTest测试库</h4><p><a href="https://github.com/huhuegg/SPMTest.git" target="_blank" rel="external">https://github.com/huhuegg/SPMTest.git</a></p>
+<h4 id="clone-SPMTest"><a href="#clone-SPMTest" class="headerlink" title="clone SPMTest"></a>clone SPMTest</h4><p><code>cd /Users/admin/Swift/SwiftPackageManagerExample/</code><br><code>git clone https://github.com/huhuegg/SPMTest.git</code></p>
+<h4 id="初始化SPMTest-library"><a href="#初始化SPMTest-library" class="headerlink" title="初始化SPMTest library"></a>初始化SPMTest library</h4><p><code>cd /Users/admin/Swift/SwiftPackageManagerExample/SPMTest</code><br><code>swift package init --type library</code></p>
 <blockquote>
 <p>Creating library package: SPMTest<br>Creating Package.swift<br>Creating .gitignore<br>Creating Sources/<br>Creating Sources/SPMTest.swift<br>Creating Tests/<br>Creating Tests/LinuxMain.swift<br>Creating Tests/SPMTest/<br>Creating Tests/SPMTest/SPMTestTests.swift</p>
 </blockquote>
-<p>##修改SPMTest</p>
-<p>####编辑Package.swift<br><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> PackageDescription</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> package = <span class="type">Package</span>(</span><br><span class="line">    name: <span class="string">"SPMTest"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建动态链接库</span></span><br><span class="line"><span class="comment">//let dynamicLibSPMTest = Product(name: "SPMTest", type: .Library(.Dynamic), modules: "SPMTest")</span></span><br><span class="line"><span class="comment">//products.append(dynamicLibSPMTest)</span></span><br><span class="line"><span class="comment">//创建静态库</span></span><br><span class="line"><span class="comment">//let staticLibExecTest = Product(name: "SPMTest", type: .Library(.Static), modules: "SPMTest")</span></span><br><span class="line"><span class="comment">//products.append(staticLibExecTest)</span></span><br></pre></td></tr></table></figure></p>
-<p>####编辑SPMTest.swift<br><strong>必须包含init方法，否则使用时会遇到 <em>initializer is inaccessible due to ‘internal’ protection level</em></strong><br><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SPMPublicTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">var</span> text = <span class="string">"SPMPublicTest"</span></span><br><span class="line">true<span class="keyword">public</span> <span class="keyword">init</span>(text:<span class="type">String</span>) &#123;</span><br><span class="line">truetrue<span class="keyword">self</span>.text = text</span><br><span class="line">true&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>##提交并标注SPMTest版本</p>
-<p>####提交编辑后的SPMTest<br><code>git commit * -m &quot;init library, add tag 1.0.0&quot;</code><br><code>git push</code></p>
-<p>####添加版本号Tag<br><strong>此处需要注意: commit &amp;&amp; push的时候local tag默认不会被提交</strong></p>
+<h2 id="修改SPMTest"><a href="#修改SPMTest" class="headerlink" title="修改SPMTest"></a>修改SPMTest</h2><h4 id="编辑Package-swift"><a href="#编辑Package-swift" class="headerlink" title="编辑Package.swift"></a>编辑Package.swift</h4><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> PackageDescription</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> package = <span class="type">Package</span>(</span><br><span class="line">    name: <span class="string">"SPMTest"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//创建动态链接库</span></span><br><span class="line"><span class="comment">//let dynamicLibSPMTest = Product(name: "SPMTest", type: .Library(.Dynamic), modules: "SPMTest")</span></span><br><span class="line"><span class="comment">//products.append(dynamicLibSPMTest)</span></span><br><span class="line"><span class="comment">//创建静态库</span></span><br><span class="line"><span class="comment">//let staticLibExecTest = Product(name: "SPMTest", type: .Library(.Static), modules: "SPMTest")</span></span><br><span class="line"><span class="comment">//products.append(staticLibExecTest)</span></span><br></pre></td></tr></table></figure>
+<h4 id="编辑SPMTest-swift"><a href="#编辑SPMTest-swift" class="headerlink" title="编辑SPMTest.swift"></a>编辑SPMTest.swift</h4><p><strong>必须包含init方法，否则使用时会遇到 <em>initializer is inaccessible due to ‘internal’ protection level</em></strong></p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SPMPublicTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">var</span> text = <span class="string">"SPMPublicTest"</span></span><br><span class="line">true<span class="keyword">public</span> <span class="keyword">init</span>(text:<span class="type">String</span>) &#123;</span><br><span class="line">truetrue<span class="keyword">self</span>.text = text</span><br><span class="line">true&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="提交并标注SPMTest版本"><a href="#提交并标注SPMTest版本" class="headerlink" title="提交并标注SPMTest版本"></a>提交并标注SPMTest版本</h2><h4 id="提交编辑后的SPMTest"><a href="#提交编辑后的SPMTest" class="headerlink" title="提交编辑后的SPMTest"></a>提交编辑后的SPMTest</h4><p><code>git commit * -m &quot;init library, add tag 1.0.0&quot;</code><br><code>git push</code></p>
+<h4 id="添加版本号Tag"><a href="#添加版本号Tag" class="headerlink" title="添加版本号Tag"></a>添加版本号Tag</h4><p><strong>此处需要注意: commit &amp;&amp; push的时候local tag默认不会被提交</strong></p>
 <p><code>git tag 1.0.0</code><br><code>git push origin --tags</code></p>
 <hr>
-<p>#创建测试工程<br><code>mkdir /Users/admin/Swift/SwiftPackageManagerExample/ExecExampleTest</code><br><code>cd /Users/admin/Swift/SwiftPackageManagerExample/ExecExampleTest</code><br><code>swift package init --type executable</code></p>
+<h1 id="创建测试工程"><a href="#创建测试工程" class="headerlink" title="创建测试工程"></a>创建测试工程</h1><p><code>mkdir /Users/admin/Swift/SwiftPackageManagerExample/ExecExampleTest</code><br><code>cd /Users/admin/Swift/SwiftPackageManagerExample/ExecExampleTest</code><br><code>swift package init --type executable</code></p>
 <blockquote>
 <p>Creating executable package: SwiftPackageManagerExample<br>Creating Package.swift<br>Creating .gitignore<br>Creating Sources/<br>Creating Sources/main.swift<br>Creating Tests/</p>
 </blockquote>
-<p>##将SPMTest库导入工程<br>在Package.swift的dependencies添加SPMTest，并指定版本为1.0.0<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> PackageDescription</span><br><span class="line"></span><br><span class="line">let <span class="keyword">package</span> = <span class="keyword">Package</span>(</span><br><span class="line">    name: <span class="string">"ExecExampleTest"</span>,</span><br><span class="line">    <span class="keyword">dependencies</span>: [</span><br><span class="line">truetrue.<span class="keyword">Package</span>(url:<span class="string">"https://github.com/huhuegg/SPMTest.git"</span>, majorVersion: <span class="number">1</span>),</span><br><span class="line">true  ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<p>##添加测试代码<br>不要在main.swift直接导入SPMTest</p>
+<h2 id="将SPMTest库导入工程"><a href="#将SPMTest库导入工程" class="headerlink" title="将SPMTest库导入工程"></a>将SPMTest库导入工程</h2><p>在Package.swift的dependencies添加SPMTest，并指定版本为1.0.0<br><figure class="highlight gradle"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> PackageDescription</span><br><span class="line"></span><br><span class="line">let <span class="keyword">package</span> = <span class="keyword">Package</span>(</span><br><span class="line">    name: <span class="string">"ExecExampleTest"</span>,</span><br><span class="line">    <span class="keyword">dependencies</span>: [</span><br><span class="line">truetrue.<span class="keyword">Package</span>(url:<span class="string">"https://github.com/huhuegg/SPMTest.git"</span>, majorVersion: <span class="number">1</span>),</span><br><span class="line">true  ]</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h2 id="添加测试代码"><a href="#添加测试代码" class="headerlink" title="添加测试代码"></a>添加测试代码</h2><p>不要在main.swift直接导入SPMTest</p>
 <p>创建Test.swift<br><code>vi Sources/Test.swift</code><br><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> SPMTest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">testFunc</span>() </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> spm = <span class="type">SPMPublicTest</span>(text: <span class="string">"SPMTest::SPMPublicTest"</span>)        </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"testFunc: <span class="subst">\(spm.text)</span>"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>修改main.swift<br><figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="title">print</span><span class="params">(<span class="string">"## Swift Package Manager Example  ##"</span>)</span></span></span><br><span class="line">Test.testFunc()</span><br></pre></td></tr></table></figure></p>
-<p>##编译<br>创建测试工程的时候使用的类型是executable，所以最后会生成可执行文件<br><code>swift build</code></p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>创建测试工程的时候使用的类型是executable，所以最后会生成可执行文件<br><code>swift build</code></p>
 <blockquote>
 <p>Cloning <a href="https://github.com/huhuegg/SPMTest.git" target="_blank" rel="external">https://github.com/huhuegg/SPMTest.git</a><br>HEAD is now at 629d483 public<br>Resolved version: 1.0.0<br>Compile Swift Module ‘SPMTest’ (1 sources)<br>Compile Swift Module ‘ExecExampleTest’ (2 sources)<br>Linking .build/debug/ExecExampleTest</p>
 </blockquote>
 <p>如果SPMTest库的tag没有被提交,在build时会遇到错误<br><code>error: No version tag found in (/Users/admin/Swift/example/Packages/SPMTest) package. Add a version tag with &quot;git tag&quot; command. Example: &quot;git tag 0.1.0&quot;</code></p>
-<p>##测试<br><code>.build/debug/ExecExampleTest</code></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p><code>.build/debug/ExecExampleTest</code></p>
 <blockquote>
 <h2 id="Swift-Package-Manager-Example"><a href="#Swift-Package-Manager-Example" class="headerlink" title="Swift Package Manager Example"></a>Swift Package Manager Example</h2><p>testFunc: SPMTest::SPMPublicTest</p>
 </blockquote>
 <hr>
-<p>#回到Xcode<br>之前所有的操作都没有打开Xcode编辑器，让我们回到最熟悉的Xcode吧！</p>
-<p>##创建Xcode工程<br><code>swift package generate-xcodeproj</code></p>
+<h1 id="回到Xcode"><a href="#回到Xcode" class="headerlink" title="回到Xcode"></a>回到Xcode</h1><p>之前所有的操作都没有打开Xcode编辑器，让我们回到最熟悉的Xcode吧！</p>
+<h2 id="创建Xcode工程"><a href="#创建Xcode工程" class="headerlink" title="创建Xcode工程"></a>创建Xcode工程</h2><p><code>swift package generate-xcodeproj</code></p>
 <blockquote>
 <p>generated: ./ExecExampleTest.xcodeproj</p>
 </blockquote>
