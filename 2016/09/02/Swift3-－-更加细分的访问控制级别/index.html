@@ -80,14 +80,13 @@
         <p><img src="https://raw.githubusercontent.com/swiftingio/blog/%2321-Swift3-Access-Control/%2321%20Swift3%20Access%20Control/Swift3AcccesControl.png" alt=""></p>
 <p>访问控制可以限定哪些代码你可以访问，哪些代码你不能访问。</p>
 <hr>
-<p>#测试环境</p>
-<p>####系统版本<br>10.11.5 Beta</p>
-<p>####Swift版本<br>Xcode8 beta 6(swift 3.0)</p>
+<h1 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h1><h4 id="系统版本"><a href="#系统版本" class="headerlink" title="系统版本"></a>系统版本</h4><p>10.11.5 Beta</p>
+<h4 id="Swift版本"><a href="#Swift版本" class="headerlink" title="Swift版本"></a>Swift版本</h4><p>Xcode8 beta 6(swift 3.0)</p>
 <hr>
-<p>#模块<br>在 Swift 中我们使用模块来管理代码，每个模块指定一个命名空间并强制指定模块外哪些部分的代码是可以被访问控制的。</p>
+<h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>在 Swift 中我们使用模块来管理代码，每个模块指定一个命名空间并强制指定模块外哪些部分的代码是可以被访问控制的。</p>
 <p>模块就是常用的Framework或App bundle。为了实现某些通用的功能或封装一些常用的方法,我们常会将代码打包成Framework，这个Framework就被称为模块，不论它被引入到其它工程或者Framework，它里面的一切（属性、函数等）都属于这个模块。</p>
 <p>前文介绍的<a href="http://www.jianshu.com/p/df134a5d99c5" target="_blank" rel="external">Swift的包管理器</a>最终提供到工程使用的就是Framework，这个就是模块。</p>
-<p>#访问级别<br>以下对访问级别的描述适用于<strong>Xcode8 beta 6</strong>及以后的Swift版本(在此之前有三个访问级别，分别为 <code>public</code>、 <code>internal</code>、 <code>private</code>)。</p>
+<h1 id="访问级别"><a href="#访问级别" class="headerlink" title="访问级别"></a>访问级别</h1><p>以下对访问级别的描述适用于<strong>Xcode8 beta 6</strong>及以后的Swift版本(在此之前有三个访问级别，分别为 <code>public</code>、 <code>internal</code>、 <code>private</code>)。</p>
 <ul>
 <li><p><strong>open</strong><br>可以访问自己<strong>模块</strong>或应用中<strong>源文件</strong>里的任何实体，别人也可以访问引入该模块中源文件里的所有实体。<br>在模块之外,  <code>open</code> 声明的成员变量和函数<strong>可以被override</strong>的。<br>相当于原来的<code>public</code>，通常情况下，某个接口或Framework被外部使用时，将其设置为<code>open</code>级别。</p>
 </li>
